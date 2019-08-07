@@ -1,6 +1,14 @@
 import pyautogui
 import time
 import win32gui, win32ui, win32con, win32api
+import hashlib
+import os
+
+pyautogui.FAILSAFE = True
+global behind_filename
+global behind_md5
+behind_filename = None
+behind_md5 = None
 
 def get_wechat_coordinate():
     x_coordinate = input('输入微信在任务栏的x坐标：')
@@ -62,19 +70,72 @@ def screenshot(start_x, start_y, finish_x, finish_y, filename):
     saveDC.BitBlt((0, 0), (finish_x, finish_y), mfcDC, (start_x, start_y), win32con.SRCCOPY)
     saveBitMap.SaveBitmapFile(saveDC, filename)
 
+def save_behind_filename(filename):
+    global behind_filename
+    behind_filename = filename
+    return behind_filename
+
+def save_behind_hash(filename):
+    global behind_md5
+    behind_md5 = hash_calculate(filename)
+    return
+
+def hash_calculate(filename):
+    with open(filename, 'rb') as f:
+        md5_obj = hashlib.md5()
+        md5_obj.update(f.read())
+        hash_final = md5_obj.hexdigest()
+    return str(hash_final).upper()
+
+def del_file(filename):
+    os.remove(filename)
+
 if __name__ == '__main__':
     wechat_coordinate = get_wechat_coordinate()
     chat_coordinate = get_chat_coordinate()
     first_chat_coordinate = get_first_chat_coordinate()
     start_chat_coordinate = get_start_chat_coordinate()
     final_chat_coordinate = get_final_chat_coordinate()
+
+    # 我的配置，下次应该改成config文件比较好
+    # wechat_coordinate = 1677, 1058
+    # chat_coordinate = 564, 321
+    # first_chat_coordinate = 687, 321
+    # start_chat_coordinate = 536, 226
+    # final_chat_coordinate = 1384, 813
+    
     while 1:
-        time.sleep(3)
-        move_mouse_to_location(wechat_coordinate[0], wechat_coordinate[1])
-        clict_twice()
-        move_mouse_to_location(chat_coordinate[0], chat_coordinate[1])
-        clict_twice()
-        move_mouse_to_location(first_chat_coordinate[0], first_chat_coordinate[1])
-        clict_once()
-        screenshot(start_chat_coordinate[0], start_chat_coordinate[1], final_chat_coordinate[0] - start_chat_coordinate[0],
-                   final_chat_coordinate[1] - start_chat_coordinate[1], 'screenshot-{}.jpg'.format(int(time.time())))
+        if behind_md5 and behind_filename:
+            filename = 'screenshot-{}.jpg'.format(int(time.time()))
+            move_mouse_to_location(wechat_coordinate[0], wechat_coordinate[1])
+            clict_twice()
+            move_mouse_to_location(chat_coordinate[0], chat_coordinate[1])
+            clict_twice()
+            move_mouse_to_location(first_chat_coordinate[0], first_chat_coordinate[1])
+            clict_once()
+            screenshot(start_chat_coordinate[0],
+                       start_chat_coordinate[1],
+                       final_chat_coordinate[0] - start_chat_coordinate[0],
+                       final_chat_coordinate[1] - start_chat_coordinate[1],
+                       filename)
+            new_hash = hash_calculate(filename)
+            if new_hash == behind_md5:
+                del_file(filename)
+            else:
+                save_behind_filename(filename)
+                save_behind_hash(filename)
+        else:
+            filename = 'screenshot-{}.jpg'.format(int(time.time()))
+            move_mouse_to_location(wechat_coordinate[0], wechat_coordinate[1])
+            clict_twice()
+            move_mouse_to_location(chat_coordinate[0], chat_coordinate[1])
+            clict_twice()
+            move_mouse_to_location(first_chat_coordinate[0], first_chat_coordinate[1])
+            clict_once()
+            screenshot(start_chat_coordinate[0],
+                       start_chat_coordinate[1],
+                       final_chat_coordinate[0] - start_chat_coordinate[0],
+                       final_chat_coordinate[1] - start_chat_coordinate[1],
+                       filename)
+            save_behind_filename(filename)
+            save_behind_hash(filename)
