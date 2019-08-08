@@ -3,47 +3,32 @@ from bs4 import BeautifulSoup
 import threading
 import re
 
-headers_btbtt = {'Host': 'btbtt.me',
+headers_btbtt = {'Host': 'btbtt.org',
                 'Proxy-Connection': 'keep-alive',
                 'Upgrade-Insecure-Requests': '1',
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36',
                 'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3',
-                'Referer': 'http://btbtt.me/forum-index-fid-951-page-3.htm',
+                'Referer': 'http://btbtt.org/forum-index-fid-951-page-3.htm',
                 'Accept-Encoding': 'gzip, deflate',
                 'Accept-Language': 'zh-CN,zh;q=0.9'
                  }
 
 # 因为Windows下文件名不允许\|<>等特殊符号，所以使用此函数进行文件名转换
 def file_replace(torrent_get_name):
-    # 其实使用for循环最好，但懒得改了
-    torrent_get_name = torrent_get_name.replace('\\', '-')
-    torrent_get_name = torrent_get_name.replace(' ', '-')
-    torrent_get_name = torrent_get_name.replace('\t', '-')
-    torrent_get_name = torrent_get_name.replace('\v', '-')
-    torrent_get_name = torrent_get_name.replace('\n', '-')
-    torrent_get_name = torrent_get_name.replace('\a', '-')
-    torrent_get_name = torrent_get_name.replace('\b', '-')
-    torrent_get_name = torrent_get_name.replace('\f', '-')
-    torrent_get_name = torrent_get_name.replace('\000', '-')
-    torrent_get_name = torrent_get_name.replace('\r', '-')
-    torrent_get_name = torrent_get_name.replace(':', '-')
-    torrent_get_name = torrent_get_name.replace('?', '-')
-    torrent_get_name = torrent_get_name.replace('*', '-')
-    torrent_get_name = torrent_get_name.replace('"', '-')
-    torrent_get_name = torrent_get_name.replace('<', '-')
-    torrent_get_name = torrent_get_name.replace('>', '-')
-    torrent_get_name = torrent_get_name.replace('|', '-')
-    torrent_get_name = torrent_get_name.replace('/', '-')
+    illegal_name_list = ['\\', ' ', '\t', '\v', '\n', '\a', '\b', '\f', '\000', '\r',
+                         ':', '?', '*', '"', '<', '>', '|', '/']
+    for item in illegal_name_list:
+        torrent_get_name = torrent_get_name.replace(item, '-')
     return torrent_get_name
 
 # 模拟翻页后的页面
 def torrent_find_url(page_list, page_count_start, page_count_finish):
     for i in range(page_count_start, page_count_finish):
         if i == 0:
-            temporary_url = 'http://btbtt.me/forum-index-fid-951.htm'
+            temporary_url = 'http://btbtt.org/forum-index-fid-951.htm'
             page_list.append(temporary_url)
         else:
-            temporary_url = 'http://btbtt.me/forum-index-fid-951-page-' + str(i + 1) + '.htm'
+            temporary_url = 'http://btbtt.org/forum-index-fid-951-page-' + str(i + 1) + '.htm'
             page_list.append(temporary_url)
     return page_list
 
@@ -63,7 +48,7 @@ def download_torrent(torrent_get_name, download_url):
     target_re = str(bs.findAll('a', {"href": True}))
     if re.findall(r'"attach(.*)" rel="', target_re):
         download_url_finish = str(re.findall(r'"attach(.*)" rel="', target_re)[0])
-        download_url_start = 'http://btbtt.me/'
+        download_url_start = 'http://btbtt.org/'
         download_url_final = download_url_start + 'attach' + download_url_finish
         exchange = _find_string(download_url_final)+'.htm'
         d_final = download_torrent_final(exchange)
@@ -80,12 +65,12 @@ def torrent_get(url_find):
         bs_find = BeautifulSoup(r_find.text, 'html.parser')
         for i in bs_find.find_all(class_='subject_link thread-new'):
             torrent_get_name = i['title']
-            torrent_get_url = 'http://www.btbtt.me/' + i['href']
+            torrent_get_url = 'http://www.btbtt.org/' + i['href']
             download_torrent(torrent_get_name, torrent_get_url)
 
         for i in bs_find.find_all(class_='subject_link thread-old'):
             torrent_get_name = i['title']
-            torrent_get_url = 'http://www.btbtt.me/' + i['href']
+            torrent_get_url = 'http://www.btbtt.org/' + i['href']
             download_torrent(torrent_get_name, torrent_get_url)
 
 # 多线程下载
