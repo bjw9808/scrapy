@@ -13,3 +13,7 @@ url:https://imbobby.net/2019/07/04/%e7%88%ac%e5%8f%96%e5%9e%83%e5%9c%be%e5%88%86
 4.btbtt.py
 url:https://imbobby.net/2019/04/17/btbtt-me%e7%94%b5%e5%bd%b1%e7%a7%8d%e5%ad%90%e7%88%ac%e8%99%ab/
 说明：爬取btbtt.me的种子文件，存储位置为：D:/torrent
+
+5.douban.py
+url:https://imbobby.net/2019/04/04/%e8%b1%86%e7%93%a3%e7%88%ac%e8%99%ab/
+说明：豆瓣模拟登录和爬取影评
