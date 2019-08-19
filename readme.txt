@@ -19,5 +19,5 @@ url:https://imbobby.net/2019/04/04/%e8%b1%86%e7%93%a3%e7%88%ac%e8%99%ab/
 说明：豆瓣模拟登录和爬取影评
 
 6.wptDEMO.py
-url:
+url:https://imbobby.net/2019/08/19/%e5%be%ae%e6%8b%8d%e5%a0%823-2-2%e7%ae%80%e5%8d%95%e9%80%86%e5%90%91/
 说明：微拍堂协议逆向DEMO
