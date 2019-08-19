@@ -20,4 +20,4 @@ url:https://imbobby.net/2019/04/04/%e8%b1%86%e7%93%a3%e7%88%ac%e8%99%ab/
 
 6.wptDEMO.py
 url:
-说明：微拍堂简单逆向DEMO
+说明：微拍堂协议逆向DEMO

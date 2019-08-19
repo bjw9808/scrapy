@@ -1,7 +1,10 @@
 import requests
-import json
 
 wpt_session = requests.Session()
+
+def get_phone_num():
+    phone_num = input('请输入手机号：')
+    return phone_num
 
 def get_cookie_headers():
     headers = {
@@ -35,28 +38,29 @@ def exchange_headers():
     }
     return headers
 
-def get_sms_code():
+def get_sms_code(phone_num):
     sms_url = 'https://api.weipaitang.com/app/v1.0/user/send-code'
     headers = exchange_headers()
-    data = 'telephone=18369180690&type=sms&nationCode=86'
+    data = 'telephone=' + phone_num + '&type=sms&nationCode=86'
     resp = wpt_session.post(sms_url, headers=headers, data=data)
     resp.encode = 'utf-8'
-    return resp.text
+    return wpt_session
 
-def post_sms_code():
+def post_sms_code(phone_num):
     url = 'https://api.weipaitang.com/app/v1.0/user/login'
-    data = 'type=0&verifyCode=' + input('请输入验证码：') + '&telephone=18369180690&nationCode=86&deviceInfo={"deviceId":"865759033234589","identity":"4cde5f534dc3647d9541eb895c0a392d","appVersion":"3.2.2","channel":"xiaomi","os":"android","wptAid":"xiaomi"}'
-    headers = get_cookie()
-    resp = wpt_session.post(url=url, headers=headers, data=data)
+    data = 'type=0&verifyCode=' + input('请输入验证码：') + '&telephone=' + phone_num + '&nationCode=86&deviceInfo={"deviceId":"865759033234589","identity":"4cde5f534dc3647d9541eb895c0a392d","appVersion":"3.2.2","channel":"xiaomi","os":"android","wptAid":"xiaomi"}'
+    headers = exchange_headers()
+    resp = wpt_session.post(url, headers=headers, data=data)
     if resp.status_code == 200:
-        return 1
+        print('登录测试成功！')
     else:
-        return 0
+        print('登录测试失败，错误码为' + str(resp.status_code))
 
 def main():
+    phone_num = get_phone_num()
     get_cookie()
-    get_sms_code()
-    post_sms_code()
+    get_sms_code(phone_num)
+    post_sms_code(phone_num)
 
 if __name__ == '__main__':
     main()
