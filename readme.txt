@@ -17,3 +17,7 @@ url:https://imbobby.net/2019/04/17/btbtt-me%e7%94%b5%e5%bd%b1%e7%a7%8d%e5%ad%90%
 5.douban.py
 url:https://imbobby.net/2019/04/04/%e8%b1%86%e7%93%a3%e7%88%ac%e8%99%ab/
 说明：豆瓣模拟登录和爬取影评
+
+6.wptDEMO.py
+url:
+说明：微拍堂简单逆向DEMO
