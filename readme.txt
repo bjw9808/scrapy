@@ -25,3 +25,7 @@ url:https://imbobby.net/2019/08/19/%e5%be%ae%e6%8b%8d%e5%a0%823-2-2%e7%ae%80%e5%
 7.doubanDEMO.py
 url:还没写文章
 说明：豆瓣手机应用协议逆向DEMO（还未完成）
+
+8.picture_sort_out.py
+url:https://www.imbobby.net/2019/10/11/59/999/
+说明：图片整理脚本
