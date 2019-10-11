@@ -4,18 +4,19 @@ import re
 
 target_folder = input('please input your folder dir to be operated:')
 dst = input('please input your new folder dir:')
-exclude_file_suffix = input('please input your exclude file suffix:')
+exclude_file_suffix = input('please input your exclude file suffix(separated by ";"):')
+suffix_list = exclude_file_suffix.split(';')
 all_file_count = 0
 move_done_file = 0
 for parent, _, file_names in os.walk(target_folder):
     for filename in file_names:
-        src = os.path.join(parent ,filename)
         if exclude_file_suffix == '':
             pass
-        elif re.findall('(.*){}'.format(exclude_file_suffix), filename):
-            continue
         else:
-            pass
+            for item in suffix_list:
+                if re.findall('(.*){}'.format(exclude_file_suffix), filename):
+                    continue
+        src = os.path.join(parent ,filename)
         try:
             shutil.move(src, dst)
             all_file_count = all_file_count + 1
