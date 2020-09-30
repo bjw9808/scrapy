@@ -29,3 +29,7 @@ url:还没写文章
 8.picture_sort_out.py
 url:https://www.imbobby.net/2019/10/11/59/999/
 说明：图片整理脚本
+
+9.poems.py
+博客链接：https://mp.weixin.qq.com/s?__biz=MzI5MjI4ODU4Nw==&mid=2247484637&idx=1&sn=46a0dcf5a93cdc213b4c4b436db4d701&chksm=ec02e5f9db756cef54516170aa5388ac3a0a6d3da743b3d80aaa8b99d96cc6da8247eac93fc2&token=112330739&lang=zh_CN#rd
+说明：古诗文网爬取
